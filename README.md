@@ -25,7 +25,7 @@ vVec=45.456,23.5,34,344,u,0.1111
 ```
 
 Code will be:
-```cpp
+```c++
 #include <configparser.h>
 
 Configuration conf = Configuration("test.cfg");
