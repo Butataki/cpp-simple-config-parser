@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-using namespace std;
 
 /** @struct parameter
     @brief Structure for config parameter.
@@ -13,8 +12,8 @@ using namespace std;
 */
 template <typename T>
 struct parameter {
-    string name; /**< string pramater name. */
-    string section; /**< string parameter section name. */
+    std::string name; /**< string pramater name. */
+    std::string section; /**< string parameter section name. */
     T value;  /**< templated type for parameter value. */
     parameter() = default;
 };
@@ -38,7 +37,11 @@ class Configuration {
         @param default_value an integer - default value to return if parameter is not found, default is 0
         @return integer value of a parameter or default_value
         */
-        int get_int_value(string name, string section="", int default_value=0);
+        int get_int_value(
+            std::string name,
+            std::string section="",
+            int default_value=0
+        );
         /**
         Public method to aquire float parameter from config.
         @see get_int_value()
@@ -47,7 +50,11 @@ class Configuration {
         @param default_value an float - default value to return if parameter is not found, default is 0.0f
         @return float value of a parameter or default_value
         */
-        float get_float_value(string name, string section="", float default_value=0.0f);
+        float get_float_value(
+            std::string name,
+            std::string section="",
+            float default_value=0.0f
+        );
         /**
         Public method to aquire string parameter from config.
         @see get_int_value()
@@ -56,7 +63,11 @@ class Configuration {
         @param default_value an string - default value to return if parameter is not found, default is empty string
         @return string value of a parameter or default_value
         */
-        string get_string_value(string name, string section="", string default_value="");
+        std::string get_string_value(
+            std::string name,
+            std::string section="",
+            std::string default_value=""
+        );
         /**
         Public method to aquire boolean parameter from config.
         Supported string values as "true" for true and anything else is false.
@@ -66,7 +77,11 @@ class Configuration {
         @param default_value an bool - default value to return if parameter is not found, default is false
         @return booelan value of a parameter or default_value
         */
-        bool get_boolean_value(string name, string section="", bool default_value=false);
+        bool get_boolean_value(
+            std::string name,
+            std::string section="",
+            bool default_value=false
+        );
         /**
         Public method to aquire vector of integers parameter from config.
         @see get_int_value()
@@ -75,7 +90,11 @@ class Configuration {
         @param default_value an integer vector - default value to return if parameter is not found, default is empty integer vector
         @return integer vector value of a parameter or default_value
         */
-        vector<int> get_int_vector_value(string name, string section="", vector<int> default_value=vector<int>());
+        std::vector<int> get_int_vector_value(
+            std::string name,
+            std::string section="",
+            std::vector<int> default_value=std::vector<int>()
+        );
         /**
         Public method to aquire float vector parameter from config.
         @see get_int_vector_value()
@@ -84,7 +103,11 @@ class Configuration {
         @param default_value an float vector - default value to return if parameter is not found, default is empty float vector
         @return float vector value of a parameter or default_value
         */
-        vector<float> get_float_vector_value(string name, string section="", vector<float> default_value=vector<float>());
+        std::vector<float> get_float_vector_value(
+            std::string name,
+            std::string section="",
+            std::vector<float> default_value=std::vector<float>()
+        );
         /**
         Public method to aquire string vector parameter from config.
         @see get_int_vector_value()
@@ -93,54 +116,59 @@ class Configuration {
         @param default_value an string vector - default value to return if parameter is not found, default is empty string vector
         @return string vector value of a parameter or default_value
         */
-        vector<string> get_string_vector_value(string name, string section="", vector<string> default_value=vector<string>());
+        std::vector<std::string> get_string_vector_value(
+            std::string name,
+            std::string section="",
+            std::vector<std::string>
+            default_value=std::vector<std::string>()
+        );
         /**
         Public method get sorted list of sections names
         @return string vector of sections in configuration file
         */
-        vector<string> get_sections();
+        std::vector<std::string> get_sections();
 
     private:
         /**
         A private variable int_parameter_storage.
         Stores integer parameters.
         */
-        vector<parameter<int>> int_parameter_storage;
+        std::vector<parameter<int>> int_parameter_storage;
         /**
         A private variable string_parameter_storage.
         Stores string parameters.
         */
-        vector<parameter<string>> string_parameter_storage;
+        std::vector<parameter<std::string>> string_parameter_storage;
         /**
         A private varaiable float_parameter_storage.
         Stores float parameters.
         */
-        vector<parameter<float>> float_parameter_storage;
+        std::vector<parameter<float>> float_parameter_storage;
         /**
         A private variable bool_parameter_storage.
         Stores boolean parameters.
         */
-        vector<parameter<bool>> bool_parameter_storage;
+        std::vector<parameter<bool>> bool_parameter_storage;
         /**
         A private varaible int_vector_parameter_storage.
         Stores integer vector parameters.
         */
-        vector<parameter<vector<int>>> int_vector_parameter_storage;
+        std::vector<parameter<std::vector<int>>> int_vector_parameter_storage;
         /**
         A private varaiable float_vector_parameter_storage.
         Stores float vector parameters.
         */
-        vector<parameter<vector<float>>> float_vector_parameter_storage;
+        std::vector<parameter<std::vector<float>>> float_vector_parameter_storage;
         /**
         A private varaiable  string_vector_parameter_storage.
         Stores string vector parameters.
         */
-        vector<parameter<vector<string>>> string_vector_parameter_storage;
+        std::vector<parameter<std::vector<std::string>>> string_vector_parameter_storage;
         /**
         A private varaiable section_storage.
         Stores configuration sections names.
         */
-        vector<string> section_storage;
+        std::vector<std::string> section_storage;
         /**
         A private method that parses configuration file.
         @param a constant character pointer path - path to configuration file.
@@ -154,6 +182,10 @@ class Configuration {
         @param strin section - section name
         @return void
         */
-        void cast_parameter(string& name, string& raw_value, string& section);
+        void cast_parameter(
+            std::string & name,
+            std::string & raw_value,
+            std::string & section
+        );
 };
 #endif

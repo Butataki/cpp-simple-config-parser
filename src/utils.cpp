@@ -2,17 +2,16 @@
 #include <string>
 #include <sstream>
 #include "utils.h"
-using namespace std;
 
 /**
 Traverse string by characters and build vector
 result if delimeter is encountered.
 */
-vector<string> split(const string& target, const char& delimeter) {
-    string part;
-    vector<string> result;
+std::vector<std::string> split(const std::string& target, const char& delimeter) {
+    std::string part;
+    std::vector<std::string> result;
 
-    for (string::const_iterator it = target.begin(); it != target.end(); it++) {
+    for (std::string::const_iterator it = target.begin(); it != target.end(); it++) {
         // If we've hit the terminal character
         if (*it == delimeter) {
             // If we have some characters accumulated
@@ -34,9 +33,9 @@ vector<string> split(const string& target, const char& delimeter) {
 /**
 Traverse vector target and send values to string stream.
 */
-string join(vector<string>& target, const char& delimeter){
-    string result;
-    stringstream stream;
+std::string join(std::vector<std::string>& target, const char& delimeter){
+    std::string result;
+    std::stringstream stream;
 
     for(size_t i = 0; i < target.size(); ++i) {
         if(i != 0)
