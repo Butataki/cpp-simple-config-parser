@@ -1,13 +1,16 @@
 #include <vector>
 #include <string>
 #include <sstream>
-#include "utils.h"
+#include "simple_config_parser/utils.h"
 
 /**
 Traverse string by characters and build vector
 result if delimeter is encountered.
 */
-std::vector<std::string> split(const std::string& target, const char& delimeter) {
+std::vector<std::string> simple_config_parser::utils::split(
+    const std::string &target,
+    const char &delimeter
+) {
     std::string part;
     std::vector<std::string> result;
 
@@ -33,7 +36,9 @@ std::vector<std::string> split(const std::string& target, const char& delimeter)
 /**
 Traverse vector target and send values to string stream.
 */
-std::string join(std::vector<std::string>& target, const char& delimeter){
+std::string simple_config_parser::utils::join(
+    std::vector<std::string> &target, const char &delimeter
+){
     std::string result;
     std::stringstream stream;
 

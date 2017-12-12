@@ -3,13 +3,13 @@
 #include <iterator>
 #include <unistd.h>
 #include <typeinfo>
-#include "configparser.h"
+#include "simple_config_parser/parser.h"
 
 
 //Example usage
 int main() {
-    Configuration conf = Configuration("test.cfg");
-    Configuration * conf_ptr = new Configuration("test.cfg");
+    simple_config_parser::parser::Configuration conf = simple_config_parser::parser::Configuration("test.cfg");
+    simple_config_parser::parser::Configuration * conf_ptr = new simple_config_parser::parser::Configuration("test.cfg");
     char * name_ptr = getlogin();
     if (name_ptr) {
         std::cout << "user is " << name_ptr << std::endl;

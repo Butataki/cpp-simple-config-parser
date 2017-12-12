@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <cctype>
 #include <sstream>
-#include "configparser.h"
-#include "utils.h"
+#include "simple_config_parser/parser.h"
+#include "simple_config_parser/utils.h"
 
 const unsigned char INT_ID_SYMBOL = 'i';
 const unsigned char INT_HEX_ID_SYMBOL = 'h';
@@ -20,11 +20,13 @@ const unsigned char STR_VECTOR_ID_SYMBOL = 'l';
 const unsigned char INT_VECTOR_ID_SYMBOL = 'p';
 const unsigned char FLOAT_VECTOR_ID_SYMBOL = 'v';
 
+simple_config_parser::parser::Configuration::Configuration() {};
+
 /**
 Try to open configuration file for read,
 if successfull pass path to parse method.
 */
-Configuration::Configuration(const char * path){
+simple_config_parser::parser::Configuration::Configuration(const char * path){
     FILE *config_file_pointer = fopen(path, "r");
     if (config_file_pointer) {
         this->parse(path);
@@ -38,7 +40,7 @@ Configuration::Configuration(const char * path){
 Typecast raw string value to apropriate parameter type and add to type
 storage.
 */
-void Configuration::cast_parameter(std::string &name, std::string &raw_value, std::string &section){
+void simple_config_parser::parser::Configuration::cast_parameter(std::string &name, std::string &raw_value, std::string &section){
     std::string::size_type sz;
     unsigned char parameter_symbol = name.front();
     std::string parameter_name = name.substr(1, name.size());
@@ -108,14 +110,14 @@ void Configuration::cast_parameter(std::string &name, std::string &raw_value, st
             this->bool_parameter_storage.push_back(bp);
             break;
         case STR_VECTOR_ID_SYMBOL:
-            raw_split_value = split(raw_value, ',');
+            raw_split_value = simple_config_parser::utils::split(raw_value, ',');
             lp.name = parameter_name;
             lp.section = section;
             lp.value = raw_split_value;
             this->string_vector_parameter_storage.push_back(lp);
             break;
         case INT_VECTOR_ID_SYMBOL:
-            raw_split_value = split(raw_value, ',');
+            raw_split_value = simple_config_parser::utils::split(raw_value, ',');
             for(std::vector<std::string>::size_type i = 0; i != raw_split_value.size(); i++) {
                 try {
                     int_vector_value.push_back(stoi(raw_split_value[i], &sz, 10));
@@ -130,7 +132,7 @@ void Configuration::cast_parameter(std::string &name, std::string &raw_value, st
             this->int_vector_parameter_storage.push_back(pp);
             break;
         case FLOAT_VECTOR_ID_SYMBOL:
-            raw_split_value = split(raw_value, ',');
+            raw_split_value = simple_config_parser::utils::split(raw_value, ',');
             for(std::vector<std::string>::size_type i = 0; i != raw_split_value.size(); i++) {
                 try {
                     float_vector_value.push_back(stod(raw_split_value[i], &sz));
@@ -154,7 +156,7 @@ void Configuration::cast_parameter(std::string &name, std::string &raw_value, st
 Read configuration file line by line and transform
 strings to parameter name and value.
 */
-void Configuration::parse(const char * path) {
+void simple_config_parser::parser::Configuration::parse(const char * path) {
     std::ifstream infile(path);
     std::string line;
     std::string current_section = "";
@@ -179,7 +181,7 @@ void Configuration::parse(const char * path) {
             continue;
         }
         // process names and values
-        raw_parameter = split(line, split_parameter_delimiter);
+        raw_parameter = simple_config_parser::utils::split(line, split_parameter_delimiter);
         raw_parameter_size = raw_parameter.size();
         // if split vector empty
         if (raw_parameter_size == 0)
@@ -198,7 +200,7 @@ void Configuration::parse(const char * path) {
         if (raw_parameter_size > 2)  {
             param_name = raw_parameter[0];
             raw_parameter.erase(raw_parameter.begin());
-            raw_value = join(raw_parameter, split_parameter_delimiter);
+            raw_value = simple_config_parser::utils::join(raw_parameter, split_parameter_delimiter);
         }
         // cast parameter by type symbol
         this->cast_parameter(param_name, raw_value, current_section);
@@ -208,7 +210,7 @@ void Configuration::parse(const char * path) {
 /**
 Cycle through integer parameters storage and return first found match or default value.
 */
-int Configuration::get_int_value(
+int simple_config_parser::parser::Configuration::get_int_value(
     std::string name,
     std::string section,
     int default_value
@@ -228,7 +230,7 @@ int Configuration::get_int_value(
 /**
 Cycle through float parameters storage and return first found match or default value.
 */
-float Configuration::get_float_value(
+float simple_config_parser::parser::Configuration::get_float_value(
     std::string name,
     std::string section,
     float default_value
@@ -248,7 +250,7 @@ float Configuration::get_float_value(
 /**
 Cycle through string parameters storage and return first found match or default value.
 */
-std::string Configuration::get_string_value(
+std::string simple_config_parser::parser::Configuration::get_string_value(
     std::string name,
     std::string section,
     std::string default_value
@@ -268,7 +270,7 @@ std::string Configuration::get_string_value(
 /**
 Cycle through booelan parameters storage and return first found match or default value.
 */
-bool Configuration::get_boolean_value(
+bool simple_config_parser::parser::Configuration::get_boolean_value(
     std::string name,
     std::string section,
     bool default_value
@@ -288,7 +290,7 @@ bool Configuration::get_boolean_value(
 /**
 Cycle through integer vector parameters storage and return first found match or default value.
 */
-std::vector<int> Configuration::get_int_vector_value(
+std::vector<int> simple_config_parser::parser::Configuration::get_int_vector_value(
     std::string name,
     std::string section,
     std::vector<int> default_value
@@ -308,7 +310,7 @@ std::vector<int> Configuration::get_int_vector_value(
 /**
 Cycle through float vector parameters storage and return first found match or default value.
 */
-std::vector<float> Configuration::get_float_vector_value(
+std::vector<float> simple_config_parser::parser::Configuration::get_float_vector_value(
     std::string name,
     std::string section,
     std::vector<float> default_value
@@ -328,7 +330,7 @@ std::vector<float> Configuration::get_float_vector_value(
 /**
 Cycle through string vector parameters storage and return first found match or default value.
 */
-std::vector<std::string> Configuration::get_string_vector_value(
+std::vector<std::string> simple_config_parser::parser::Configuration::get_string_vector_value(
     std::string name,
     std::string section,
     std::vector<std::string> default_value
@@ -348,6 +350,6 @@ std::vector<std::string> Configuration::get_string_vector_value(
 /**
 Return section_storage private varaiable;
 */
-std::vector<std::string> Configuration::get_sections(void){
+std::vector<std::string> simple_config_parser::parser::Configuration::get_sections(void){
     return this->section_storage;
 };
